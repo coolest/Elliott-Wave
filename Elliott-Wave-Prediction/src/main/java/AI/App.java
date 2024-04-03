@@ -13,8 +13,6 @@ import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
 
-import org.jfree.ui.ApplicationFrame;
-
 /**
  * Hello world!
  *
@@ -29,9 +27,9 @@ public class App
         JPanel flowLayoutPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         borderPanel.add(flowLayoutPanel, BorderLayout.SOUTH);
 
-        LocalDateTime[] start_and_end_prefix = getStartandEndPrefix();
-        JButton startDateButton = buildDateButton(frame, start_and_end_prefix[0].toString());
-        JButton endDateButton = buildDateButton(frame, start_and_end_prefix[1].toString());
+        LocalDateTime[] startEndPrefix = getStartandEndPrefix();
+        JButton startDateButton = buildDateButton(frame, startEndPrefix[0].toString());
+        JButton endDateButton = buildDateButton(frame, startEndPrefix[1].toString());
         flowLayoutPanel.add(startDateButton);
         flowLayoutPanel.add(endDateButton);
         
@@ -44,6 +42,9 @@ public class App
         frame.setVisible(true);
     }
 
+    private static Date startDate;
+    private static Date endDate;
+
     private static LocalDateTime[] getStartandEndPrefix(){
         LocalDateTime todayAtMidnight = LocalDate.now().atStartOfDay(); // Today at 00:00:00
         LocalDateTime weekAgoAtMidnight = todayAtMidnight.minusWeeks(1); // A week ago at 00:00:00
@@ -52,9 +53,9 @@ public class App
         return dateTimes;
     }
     private static JButton buildDateButton(JFrame frame, String prompt){
-        JButton startDate = new JButton(prompt);
+        JButton inputDate = new JButton(prompt);
 
-        startDate.addActionListener(new ActionListener() {
+        inputDate.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Use JOptionPane to get the date as a string
                 String dateStr = JOptionPane.showInputDialog(frame, "Enter the date (YYYY-MM-DD):");
@@ -73,7 +74,7 @@ public class App
                 }
             }
         });
-        return startDate;
+        return inputDate;
     }
 
     public static void main( String[] args )
