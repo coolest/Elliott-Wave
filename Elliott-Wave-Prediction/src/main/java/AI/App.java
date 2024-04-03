@@ -1,7 +1,19 @@
 package AI;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.SwingUtilities;
+
+import javax.swing.*;
+import java.awt.*;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.text.ParseException;
+
+import java.time.LocalDateTime;
+import java.time.LocalDate;
+
+import org.jfree.ui.ApplicationFrame;
 
 /**
  * Hello world!
@@ -13,13 +25,55 @@ public class App
         JFrame frame = new JFrame("Elliott Wave Predictor");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Add the "Hello World" label.
-        JLabel label = new JLabel("Hello World");
-        frame.getContentPane().add(label);
+        JPanel borderPanel = new JPanel(new BorderLayout());
+        JPanel flowLayoutPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        borderPanel.add(flowLayoutPanel, BorderLayout.SOUTH);
+
+        LocalDateTime[] start_and_end_prefix = getStartandEndPrefix();
+        JButton startDateButton = buildDateButton(frame, start_and_end_prefix[0].toString());
+        JButton endDateButton = buildDateButton(frame, start_and_end_prefix[1].toString());
+        flowLayoutPanel.add(startDateButton);
+        flowLayoutPanel.add(endDateButton);
+        
+        ChartBuilder chartBuilder = ChartBuilder.getChartBuilder();
+        borderPanel.add(chartBuilder.createTickerChartPanel("Bitcoin Prices"), BorderLayout.CENTER);
 
         // Display the window.
-        frame.setSize(800, 600);
+        frame.add(borderPanel);
+        frame.setSize(800, 300);
         frame.setVisible(true);
+    }
+
+    private static LocalDateTime[] getStartandEndPrefix(){
+        LocalDateTime todayAtMidnight = LocalDate.now().atStartOfDay(); // Today at 00:00:00
+        LocalDateTime weekAgoAtMidnight = todayAtMidnight.minusWeeks(1); // A week ago at 00:00:00
+
+        LocalDateTime[] dateTimes = {todayAtMidnight, weekAgoAtMidnight};
+        return dateTimes;
+    }
+    private static JButton buildDateButton(JFrame frame, String prompt){
+        JButton startDate = new JButton(prompt);
+
+        startDate.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Use JOptionPane to get the date as a string
+                String dateStr = JOptionPane.showInputDialog(frame, "Enter the date (YYYY-MM-DD):");
+
+                // Optional: Parse the date string to a Date object to validate or use
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                try {
+                    Date date = dateFormat.parse(dateStr);
+                    // Use the date for your application needs
+                    System.out.println("Date entered: " + date);
+                } catch (ParseException parseException) {
+                    JOptionPane.showMessageDialog(frame, "Invalid date format. Please enter the date in YYYY-MM-DD format.", "Error", JOptionPane.ERROR_MESSAGE);
+                } catch (NullPointerException nullPointerException) {
+                    // Handle case where user cancels the input dialog
+                    System.out.println("No date entered.");
+                }
+            }
+        });
+        return startDate;
     }
 
     public static void main( String[] args )

@@ -1,0 +1,3 @@
+mvn package
+
+java -cp target/Elliott-Wave-Prediction-1.0-SNAPSHOT.jar AI.App
