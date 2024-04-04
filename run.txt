@@ -1,3 +1,3 @@
-mvn package
+mvn clean compile assembly:single
 
-java -cp target/Elliott-Wave-Prediction-1.0-SNAPSHOT.jar AI.App
+java -cp target/Elliott-Wave-Prediction-1.0-SNAPSHOT-jar-with-dependencies.jar AI.App
