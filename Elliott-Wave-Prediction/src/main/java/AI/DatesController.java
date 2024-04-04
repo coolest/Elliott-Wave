@@ -21,19 +21,28 @@ public class DatesController {
         this.parentFrame = parentFrame;
     }
 
+    private Date parseDateString(String dateStr){
+        try {
+            Date date = dateFormat.parse(dateStr);
+
+            return date;
+        } catch (ParseException parseException) {
+            JOptionPane.showMessageDialog(parentFrame, "Invalid date format. Please enter the date in YYYY-MM-DD format.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        return null;
+    }
+
     public JButton buildDateButton(String initialDate, int index){
-        JButton inputDate = new JButton(initialDate);
+        Date formattedDate = parseDateString(initialDate);
+        JButton inputDate = new JButton(formattedDate.toString());
 
         inputDate.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String dateStr = JOptionPane.showInputDialog(parentFrame, "Enter the date (YYYY-MM-DD):");
 
-                try {
-                    Date date = dateFormat.parse(dateStr);
-                    inputDate.setText(date.toString());
-                } catch (ParseException parseException) {
-                    JOptionPane.showMessageDialog(parentFrame, "Invalid date format. Please enter the date in YYYY-MM-DD format.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
+                Date date = parseDateString(dateStr);
+                inputDate.setText(date.toString());
             }
         });
 
@@ -47,12 +56,8 @@ public class DatesController {
         for (int i = 0; i < 2; i++){
             JButton dateInput = dateInterval[i];
 
-            try {
-                Date date = dateFormat.parse(dateInput.getText());
-                interval.add(date);
-            } catch (ParseException parseException) {
-                JOptionPane.showMessageDialog(parentFrame, "Invalid date format. Please enter the date in YYYY-MM-DD format.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
+            Date date = parseDateString(dateInput.getText());
+            interval.add(date);
         }
 
         return interval;
