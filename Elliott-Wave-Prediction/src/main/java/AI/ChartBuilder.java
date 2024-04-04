@@ -2,8 +2,6 @@ package AI;
 
 import java.util.Date;
 
-import javax.swing.BorderFactory;
-
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -41,8 +39,6 @@ public class ChartBuilder {
         );
 
         ChartPanel chartPanel = new ChartPanel(chart);
-        chartPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
-        
         return chartPanel;
     }
 }

@@ -5,7 +5,12 @@ import java.net.URL;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-public class PriceFetch {
+public class PriceFetcher {
+
+    private DatesController datesController;
+    public PriceFetcher(DatesController datesController){
+        this.datesController = datesController;
+    }
 
     public String fetchCryptoPrices(long startDate, long endDate) {
         try {
