@@ -15,16 +15,11 @@ import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
 
-/**
- * Hello world!
- *
- */
 public class App 
 {
     private static DatesController datesController;
     private static PredictionController predictionController;
     private static PriceFetcher priceFetcher;
-    private static ChartBuilder chartBuilder;
 
     private static void buildGUI(){
         JFrame frame = new JFrame("Elliott Wave Predictor");
@@ -45,9 +40,11 @@ public class App
 
         JButton analyzeButton = new JButton("Analyze");
         borderPanel.add(analyzeButton, BorderLayout.NORTH);
-        
-        chartBuilder = ChartBuilder.getChartBuilder();
+
+        ChartBuilder chartBuilder = ChartBuilder.getChartBuilder();
         borderPanel.add(chartBuilder.createTickerChartPanel("Bitcoin Prices"), BorderLayout.CENTER);
+
+        predictionController = new PredictionController(analyzeButton, chartBuilder);
 
         // Display the window.
         frame.add(borderPanel);
