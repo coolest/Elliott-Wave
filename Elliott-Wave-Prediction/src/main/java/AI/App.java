@@ -22,7 +22,9 @@ import java.time.LocalDate;
 public class App 
 {
     private static DatesController datesController;
+    private static PredictionController predictionController;
     private static PriceFetcher priceFetcher;
+    private static ChartBuilder chartBuilder;
 
     private static void buildGUI(){
         JFrame frame = new JFrame("Elliott Wave Predictor");
@@ -38,13 +40,13 @@ public class App
         LocalDateTime todayAtMidnight = LocalDate.now().atStartOfDay();
         JButton startDateButton = datesController.buildDateButton(todayAtMidnight.toString(), 0);
         JButton endDateButton = datesController.buildDateButton(todayAtMidnight.minusWeeks(1).toString(), 1);
-        flowLayoutPanel.add(startDateButton);
         flowLayoutPanel.add(endDateButton);
+        flowLayoutPanel.add(startDateButton);
 
         JButton analyzeButton = new JButton("Analyze");
         borderPanel.add(analyzeButton, BorderLayout.NORTH);
         
-        ChartBuilder chartBuilder = ChartBuilder.getChartBuilder();
+        chartBuilder = ChartBuilder.getChartBuilder();
         borderPanel.add(chartBuilder.createTickerChartPanel("Bitcoin Prices"), BorderLayout.CENTER);
 
         // Display the window.
