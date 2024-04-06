@@ -10,15 +10,18 @@ import javax.swing.JOptionPane;
 import org.jfree.data.xy.DefaultHighLowDataset;
 
 public class PredictionController {
-    private ChartBuilder chartBuilder;
+    private PriceFetcher prices;
 
     private void performAnalysis(){
-        DefaultHighLowDataset dataset = chartBuilder.getDataset();
-        
+        DefaultHighLowDataset dataset = prices.getDataset();
+
+        // make a new chart builder
+
+        App.buildReportGUI();
     }
 
-    public PredictionController(JButton analyzeButton, ChartBuilder chart){
-        this.chartBuilder = chart;
+    public PredictionController(JButton analyzeButton, PriceFetcher prices){
+        this.prices = prices;
 
         analyzeButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

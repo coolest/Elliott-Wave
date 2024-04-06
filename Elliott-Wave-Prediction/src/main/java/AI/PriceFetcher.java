@@ -2,38 +2,65 @@ package AI;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import org.jfree.data.xy.DefaultHighLowDataset;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+import java.net.URI;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.HttpResponse;
+import org.apache.http.util.EntityUtils;
+
+import org.json.JSONObject;
+
 public class PriceFetcher {
 
+    private DefaultHighLowDataset dataset;
+
+    private ChartBuilder chartBuilder;
     private DatesController datesController;
-    public PriceFetcher(DatesController datesController){
+    private HttpClient httpClient;
+    public PriceFetcher(DatesController datesController, ChartBuilder chartBuilder){
         this.datesController = datesController;
+        this.chartBuilder = chartBuilder;
+        this.httpClient = HttpClients.createDefault();
+
+        // create http client
+        
     }
 
-    public String fetchCryptoPrices(long startDate, long endDate) {
+    public DefaultHighLowDataset getDataset(){
+        return dataset;
+    }
+    
+    public void populatePrices() {
+        long startDate = 0;
+        long endDate = 0;
+
+        // use http client
+        // get prices
+        
+        // put them in DefaultHighLowDataset
+
+        // set that in chartBuilder
+
         try {
             String urlString = String.format(
                 "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart/range?vs_currency=usd&from=%d&to=%d",
                 startDate, endDate);
-            URL url = new URL(urlString);
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("GET");
+            
+            HttpGet request = new HttpGet(urlString);
+            HttpResponse response = httpClient.execute(request)
 
-            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            String inputLine;
-            StringBuilder response = new StringBuilder();
+            String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+            jsonResponse = new JSONObject(responseString);
 
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            in.close();
-
-            return response.toString(); 
+            // chartBuilder.setDataset()
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
         }
     }
 }

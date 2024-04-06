@@ -30,7 +30,6 @@ public class App
         borderPanel.add(flowLayoutPanel, BorderLayout.SOUTH);
 
         datesController = new DatesController(frame);
-        priceFetcher = new PriceFetcher(datesController);
 
         LocalDateTime todayAtMidnight = LocalDate.now().atStartOfDay();
         JButton startDateButton = datesController.buildDateButton(todayAtMidnight.toString(), 0);
@@ -44,8 +43,9 @@ public class App
         ChartBuilder chartBuilder = ChartBuilder.getChartBuilder();
         borderPanel.add(chartBuilder.createTickerChartPanel("Bitcoin Prices"), BorderLayout.CENTER);
 
-        predictionController = new PredictionController(analyzeButton, chartBuilder);
-
+        priceFetcher = new PriceFetcher(datesController, chartBuilder);
+        predictionController = new PredictionController(analyzeButton, priceFetcher);
+        
         // Display the window.
         frame.add(borderPanel);
         frame.setSize(800, 300);
