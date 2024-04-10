@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,7 +17,7 @@ public class DatesController {
     private PriceFetcher priceFetcher;
     private JFrame parentFrame;
 
-    public static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("YYYY-MM-DD");
+    public static final DateTimeFormatter dateFormat = DateTimeFormatter.ISO_DATE;
     private JButton[] dateInterval = new JButton[2];
 
     public DatesController(JFrame parentFrame, PriceFetcher priceFetcher){
@@ -28,10 +29,10 @@ public class DatesController {
         return dateFormat;
     }
 
-    private Date parseDateString(String dateStr){
+    private LocalDate parseDateString(String dateStr){
         try {
             System.out.println(dateStr);
-            Date date = (Date) dateFormat.parse(dateStr);
+            LocalDate date = LocalDate.parse(dateStr, dateFormat);
 
             return date;
         } catch (Exception e) {
@@ -42,14 +43,14 @@ public class DatesController {
     }
 
     public JButton buildDateButton(String initialDate, int index){
-        Date formattedDate = parseDateString(initialDate);
+        LocalDate formattedDate = parseDateString(initialDate);
         JButton inputDate = new JButton(formattedDate.toString());
 
         inputDate.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String dateStr = JOptionPane.showInputDialog(parentFrame, "Enter the date (YYYY-MM-DD):");
 
-                Date date = parseDateString(dateStr);
+                LocalDate date = parseDateString(dateStr);
                 inputDate.setText(date.toString());
 
                 priceFetcher.fetchCryptoPrices(getDateInterval());
@@ -60,13 +61,13 @@ public class DatesController {
         return inputDate;
     }
 
-    public ArrayList<Date> getDateInterval(){
-        ArrayList<Date> interval = new ArrayList<>();
+    public ArrayList<LocalDate> getDateInterval(){
+        ArrayList<LocalDate> interval = new ArrayList<>();
 
         for (int i = 0; i < 2; i++){
             JButton dateInput = dateInterval[i];
 
-            Date date = parseDateString(dateInput.getText());
+            LocalDate date = parseDateString(dateInput.getText());
             interval.add(date);
         }
 

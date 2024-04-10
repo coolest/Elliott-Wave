@@ -15,9 +15,8 @@ import java.util.Date;
 
 import javax.xml.stream.events.EndElement;
 
-import java.text.SimpleDateFormat;  
-
-
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.net.URI;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -42,13 +41,11 @@ public class PriceFetcher {
         return dataset;
     }
 
-    public void fetchCryptoPrices(ArrayList<Date> dateInterval) {
-        Date startDate = dateInterval.get(0);
-        Date endDate = dateInterval.get(1);
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-
+    public void fetchCryptoPrices(ArrayList<LocalDate> dateInterval) {
+        LocalDate startDate = dateInterval.get(0);
+        LocalDate endDate = dateInterval.get(1);
         String url = String.format("https://data.alpaca.markets/v1beta3/crypto/us/bars?symbols=%s&timeframe=%s&start=%s&end=%s&limit=%d&sort=%s", 
-                                    "BTC/USD,LTC/USD", "1D", formatter.format(startDate), formatter.format(endDate), 1000, "asc");
+                                    "BTC/USD,LTC/USD", "1D", startDate.toString(), endDate.toString(), 1000, "asc");
 
         String result = "";
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
