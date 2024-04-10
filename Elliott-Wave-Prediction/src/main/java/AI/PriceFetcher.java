@@ -5,6 +5,8 @@ import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
+
+import org.jfree.data.xy.DefaultHighLowDataset;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import java.io.IOException;
@@ -14,11 +16,29 @@ import java.util.Date;
 import java.text.SimpleDateFormat;  
 
 
+import java.net.URI;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.HttpResponse;
+import org.apache.http.util.EntityUtils;
+
+import org.json.JSONObject;
+
 public class PriceFetcher {
 
+    private DefaultHighLowDataset dataset;
+
+    private ChartBuilder chartBuilder;
     private DatesController datesController;
-    public PriceFetcher(DatesController datesController){
+    private HttpClient httpClient;
+    public PriceFetcher(DatesController datesController, ChartBuilder chartBuilder){
         this.datesController = datesController;
+        this.chartBuilder = chartBuilder;
+        this.httpClient = HttpClients.createDefault();
+
+        // create http client
+        
     }
 
     public void fetchCryptoPrices() {

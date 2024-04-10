@@ -31,6 +31,10 @@ public class ChartBuilder {
         return instance;
     }
 
+    public DefaultHighLowDataset getDataset(){
+        return dataset;
+    }
+
     public ChartPanel createTickerChartPanel(String title) {
         JFreeChart chart = ChartFactory.createCandlestickChart(
                 "Bitcoin Price Chart",
