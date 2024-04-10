@@ -31,7 +31,6 @@ public class DatesController {
 
     private LocalDate parseDateString(String dateStr){
         try {
-            System.out.println(dateStr);
             LocalDate date = LocalDate.parse(dateStr, dateFormat);
 
             return date;
