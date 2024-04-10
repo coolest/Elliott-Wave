@@ -16,9 +16,11 @@ import javax.swing.JOptionPane;
 public class DatesController {
     private PriceFetcher priceFetcher;
     private JFrame parentFrame;
+    private JButton[] dateInterval = new JButton[2];
 
     public static final DateTimeFormatter dateFormat = DateTimeFormatter.ISO_DATE;
-    private JButton[] dateInterval = new JButton[2];
+    private static final LocalDate maxDate = LocalDate.now();
+    private static final LocalDate minDate = LocalDate.of(2021, 6, 1);
 
     public DatesController(JFrame parentFrame, PriceFetcher priceFetcher){
         this.parentFrame = parentFrame;
@@ -32,7 +34,12 @@ public class DatesController {
     private LocalDate parseDateString(String dateStr){
         try {
             LocalDate date = LocalDate.parse(dateStr, dateFormat);
+            if (date.isAfter(maxDate))
+                date = maxDate;
 
+            if (date.isBefore(minDate))
+                date = minDate;
+                
             return date;
         } catch (Exception e) {
             JOptionPane.showMessageDialog(parentFrame, "Invalid date format. Please enter the date in YYYY-MM-DD format.", "Error", JOptionPane.ERROR_MESSAGE);
