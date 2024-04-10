@@ -23,6 +23,7 @@ public class DatesController {
 
     private Date parseDateString(String dateStr){
         try {
+            System.out.println(dateStr);
             Date date = dateFormat.parse(dateStr);
 
             return date;
@@ -43,6 +44,7 @@ public class DatesController {
 
                 Date date = parseDateString(dateStr);
                 inputDate.setText(date.toString());
+                // System.out.println(date.toString());
             }
         });
 

@@ -1,9 +1,18 @@
 package AI;
 
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import java.io.IOException;
+
+
+import java.util.Date;
+import java.text.SimpleDateFormat;  
+
 
 public class PriceFetcher {
 
@@ -12,28 +21,29 @@ public class PriceFetcher {
         this.datesController = datesController;
     }
 
-    public String fetchCryptoPrices(long startDate, long endDate) {
-        try {
-            String urlString = String.format(
-                "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart/range?vs_currency=usd&from=%d&to=%d",
-                startDate, endDate);
-            URL url = new URL(urlString);
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("GET");
+    public void fetchCryptoPrices() {
+        Date startDate = this.datesController.getDateInterval().get(0);
+        Date endDate = this.datesController.getDateInterval().get(1);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
-            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            String inputLine;
-            StringBuilder response = new StringBuilder();
+        String url = String.format("https://data.alpaca.markets/v1beta3/crypto/us/bars?symbols=%s&timeframe=%s&start=%s&end=%s&limit=%d&sort=%s", 
+                                    "BTC/USD,LTC/USD", "1D", formatter.format(startDate), formatter.format(endDate), 1000, "asc");
 
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
+        System.out.println(url); // testing
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            HttpGet request = new HttpGet(url);
+            request.addHeader("APCA-API-KEY-ID", "AK0JHD2IZ36SAE900Q82");
+            request.addHeader("APCA-API-SECRET-KEY", "hnsYdr3gMpqVTKb2tS7fjPBerSaTfMBcyJnzFCej");
+    
+            try (CloseableHttpResponse response = httpClient.execute(request)) {
+                HttpEntity entity = response.getEntity();
+                if (entity != null) {
+                    String result = EntityUtils.toString(entity);
+                    System.out.println(result);
+                }
             }
-            in.close();
-
-            return response.toString(); 
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
-            return null;
         }
     }
 }

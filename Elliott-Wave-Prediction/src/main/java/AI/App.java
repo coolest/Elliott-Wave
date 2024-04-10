@@ -42,7 +42,14 @@ public class App
         flowLayoutPanel.add(endDateButton);
 
         JButton analyzeButton = new JButton("Analyze");
+        
         borderPanel.add(analyzeButton, BorderLayout.NORTH);
+        analyzeButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                priceFetcher.fetchCryptoPrices();
+                
+            }
+        });
         
         ChartBuilder chartBuilder = ChartBuilder.getChartBuilder();
         borderPanel.add(chartBuilder.createTickerChartPanel("Bitcoin Prices"), BorderLayout.CENTER);

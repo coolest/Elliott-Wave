@@ -1,6 +1,8 @@
 package AI;
 
 import java.util.Date;
+import java.math.BigDecimal;
+import java.util.Calendar;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -40,5 +42,9 @@ public class ChartBuilder {
 
         ChartPanel chartPanel = new ChartPanel(chart);
         return chartPanel;
+    }
+
+    public void updateDatase(Date[] dates, double[] high, double[] low, double[] open, double[] close, double[] volume){
+        this.dataset = new DefaultHighLowDataset("BTC", dates, high, low, open, close, volume);
     }
 }
