@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.text.ParseException;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
 
 public class App 
@@ -29,35 +30,34 @@ public class App
         JPanel flowLayoutPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         borderPanel.add(flowLayoutPanel, BorderLayout.SOUTH);
 
-        datesController = new DatesController(frame);
+        ChartBuilder chartBuilder = ChartBuilder.getChartBuilder();
+        borderPanel.add(chartBuilder.createTickerChartPanel("Bitcoin Prices"), BorderLayout.CENTER);
+
+        priceFetcher = new PriceFetcher(chartBuilder);
+        datesController = new DatesController(frame, priceFetcher);
 
         LocalDateTime todayAtMidnight = LocalDate.now().atStartOfDay();
-        JButton startDateButton = datesController.buildDateButton(todayAtMidnight.toString(), 0);
-        JButton endDateButton = datesController.buildDateButton(todayAtMidnight.minusWeeks(1).toString(), 1);
+        JButton startDateButton = datesController.buildDateButton(todayAtMidnight.format(DateTimeFormatter.ofPattern("uuuu-MM-dd")), 0);
+        JButton endDateButton = datesController.buildDateButton(todayAtMidnight.minusWeeks(1).format(DateTimeFormatter.ofPattern("uuuu-MM-dd")), 1);
         flowLayoutPanel.add(endDateButton);
         flowLayoutPanel.add(startDateButton);
 
         JButton analyzeButton = new JButton("Analyze");
-        
         borderPanel.add(analyzeButton, BorderLayout.NORTH);
-        analyzeButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                priceFetcher.fetchCryptoPrices();
-                
-            }
-        });
-        
 
-        ChartBuilder chartBuilder = ChartBuilder.getChartBuilder();
-        borderPanel.add(chartBuilder.createTickerChartPanel("Bitcoin Prices"), BorderLayout.CENTER);
-
-        priceFetcher = new PriceFetcher(datesController, chartBuilder);
         predictionController = new PredictionController(analyzeButton, priceFetcher);
-        
+
+        priceFetcher.fetchCryptoPrices(datesController.getDateInterval());
+
         // Display the window.
         frame.add(borderPanel);
         frame.setSize(800, 300);
         frame.setVisible(true);
+        
+    }
+
+    public static void buildReportGUI(){
+
     }
 
     public static void main( String[] args )

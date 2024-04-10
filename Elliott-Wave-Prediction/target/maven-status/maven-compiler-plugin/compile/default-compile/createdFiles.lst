@@ -1,6 +1,7 @@
-AI\ChartBuilder.class
-AI\PredictionController.class
-AI\DatesController$1.class
-AI\DatesController.class
-AI\PriceFetcher.class
-AI\App.class
+AI/PriceFetcher.class
+AI/ChartBuilder.class
+AI/App.class
+AI/DatesController$1.class
+AI/DatesController.class
+AI/PredictionController.class
+AI/PredictionController$1.class
