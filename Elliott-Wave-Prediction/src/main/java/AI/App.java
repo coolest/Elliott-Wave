@@ -37,8 +37,8 @@ public class App
         datesController = new DatesController(frame, priceFetcher);
 
         LocalDateTime todayAtMidnight = LocalDate.now().atStartOfDay();
-        JButton startDateButton = datesController.buildDateButton(todayAtMidnight.format(datesController.getDateFormat()), 0);
-        JButton endDateButton = datesController.buildDateButton(todayAtMidnight.minusWeeks(1).format(datesController.getDateFormat()), 1);
+        JButton startDateButton = datesController.buildDateButton(todayAtMidnight.format(datesController.getDateFormat()), 1);
+        JButton endDateButton = datesController.buildDateButton(todayAtMidnight.minusWeeks(1).format(datesController.getDateFormat()), 0);
         flowLayoutPanel.add(endDateButton);
         flowLayoutPanel.add(startDateButton);
 

@@ -7,11 +7,14 @@ import java.util.Calendar;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.xy.DefaultHighLowDataset;
 
 public class ChartBuilder {
     private static ChartBuilder instance;
 
+    private JFreeChart chart;
     private DefaultHighLowDataset dataset;
     private ChartBuilder(){
         Date[] date = new Date[0];
@@ -31,10 +34,6 @@ public class ChartBuilder {
         return instance;
     }
 
-    public DefaultHighLowDataset getDataset(){
-        return dataset;
-    }
-
     public ChartPanel createTickerChartPanel(String title) {
         JFreeChart chart = ChartFactory.createCandlestickChart(
                 "Bitcoin Price Chart",
@@ -44,11 +43,20 @@ public class ChartBuilder {
                 false
         );
 
+        this.chart = chart;
+
         ChartPanel chartPanel = new ChartPanel(chart);
         return chartPanel;
     }
 
-    public void updateDatase(Date[] dates, double[] high, double[] low, double[] open, double[] close, double[] volume){
-        this.dataset = new DefaultHighLowDataset("BTC", dates, high, low, open, close, volume);
+    public void updateDataset(DefaultHighLowDataset dataset, double min, double max){
+        this.dataset = dataset;
+
+        chart.getXYPlot().setDataset(dataset);
+        
+        XYPlot plot = (XYPlot) chart.getPlot();
+        ValueAxis yAxis = plot.getRangeAxis();
+
+        yAxis.setRange(min - min * 1/25, max + max * 1/25);
     }
 }
