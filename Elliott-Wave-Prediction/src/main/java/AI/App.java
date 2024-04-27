@@ -60,24 +60,24 @@ public class App
 
     }
 
-    public static void testFeatures(){
-        EWFeatureExtraction featureExtraction = new EWFeatureExtraction("src/main/resources/data.json");
-        featureExtraction.findLocalHighsAndLows(3);
+    // public static void testFeatures(){
+    //     EWFeatureExtraction featureExtraction = new EWFeatureExtraction("src/main/resources/data.json");
+    //     featureExtraction.findLocalHighsAndLows(3);
         
-        System.out.println(featureExtraction.localHighs.toString());
-        System.out.println("--------------------------------------------------");
-        System.out.println(featureExtraction.localLows.toString());
-        System.out.println("--------------------------------------------------");
-        System.out.println(featureExtraction.calculateSMA(featureExtraction.closePrices, 20));
-        System.out.println("--------------------------------------------------");
-        featureExtraction.calculateFibonacciLevels();
+    //     System.out.println(featureExtraction.localHighs.toString());
+    //     System.out.println("--------------------------------------------------");
+    //     System.out.println(featureExtraction.localLows.toString());
+    //     System.out.println("--------------------------------------------------");
+    //     System.out.println(featureExtraction.calculateSMA(featureExtraction.closePrices, 20));
+    //     System.out.println("--------------------------------------------------");
+    //     featureExtraction.calculateFibonacciLevels();
 
 
-    }
+    // }
 
     public static void main( String[] args )
     {
-        // buildGUI();
-        testFeatures();
+        buildGUI();
+
     }
 }
