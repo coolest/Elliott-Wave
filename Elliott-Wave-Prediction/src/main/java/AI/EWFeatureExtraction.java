@@ -146,14 +146,17 @@ public class EWFeatureExtraction {
         // Assuming localHighs and localLows are sorted or the latest is the most relevant
         double lastHigh = localHighs.get(localHighs.size() - 1);
         double lastLow = localLows.get(localLows.size() - 1);
-    
         double range = lastHigh - lastLow;
     
         double retracement38 = lastHigh - range * 0.382;
         double retracement50 = lastHigh - range * 0.500;
         double retracement61 = lastHigh - range * 0.618;
-
-        Fibonacci fibonacci = new Fibonacci(retracement38, retracement50, retracement61);
+    
+        double extension161 = lastLow + range * 1.618;
+        double extension261 = lastLow + range * 2.618;
+        double extension423 = lastLow + range * 4.236;
+    
+        Fibonacci fibonacci = new Fibonacci(retracement38, retracement50, retracement61, extension161, extension261, extension423);
         return fibonacci;
     }
 
