@@ -80,16 +80,8 @@ public class Trainer {
 
             return;
         }
-
-        int totalSize = bars.size();
-        int trainSize = (int) (totalSize * 0.7); // 70% for training
-        int validationSize = (int) (totalSize * 0.15); // 15% for validation
-        int testSize = totalSize - trainSize - validationSize; // 15% for testing
-
-        List<Bar> trainData = bars.subList(0, trainSize);
-        List<Bar> validationData = bars.subList(trainSize, trainSize + validationSize);
-        List<Bar> testData = bars.subList(trainSize + validationSize, totalSize);
         
         List<List<Bar>> partitions = partitionData(bars, 50, 5);
+        
     }
 }

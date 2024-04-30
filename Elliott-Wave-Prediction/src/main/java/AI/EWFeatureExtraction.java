@@ -134,8 +134,6 @@ public class EWFeatureExtraction {
         }
     }
 
-   
-
     // Calculate Fibonacci retracement levels from given peak and trough
     public Fibonacci calculateFibonacciLevels() {
         if (localHighs.isEmpty() || localLows.isEmpty()) {
