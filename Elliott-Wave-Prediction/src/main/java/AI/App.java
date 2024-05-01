@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.text.ParseException;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -59,7 +60,7 @@ public class App
         frame.setVisible(true);
     }
 
-    public static void buildReportGUI(double priceAction, long priceActionTime){
+    public static void buildReportGUI(double priceAction, String priceActionTime){
         JFrame frame = new JFrame("Prediction");
         //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -67,7 +68,7 @@ public class App
         JLabel priceLabel = new JLabel("Price is predicted to be: " + (int)priceAction);
         flowLayoutPanel.add(priceLabel);
 
-        JLabel time = new JLabel("Predicted price on: " + Date.from(Instant.ofEpochSecond(priceActionTime)).toString());
+        JLabel time = new JLabel("Predicted price on: " + priceActionTime);
         flowLayoutPanel.add(time);
 
         frame.add(flowLayoutPanel);

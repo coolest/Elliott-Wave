@@ -2,6 +2,10 @@ package AI;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -98,7 +102,11 @@ public class PredictionController {
             }
         }
     
-        return new Object[]{predictedPrice, predictedTime};
+        LocalDateTime predictedDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(predictedTime), ZoneId.systemDefault());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedDateTime = predictedDateTime.format(formatter);
+        
+        return new Object[]{predictedPrice, formattedDateTime};
     }
 
     private void performAnalysis(){
@@ -112,7 +120,7 @@ public class PredictionController {
 
         Object[] result = predictNextWavePriceAction(highs, lows);
         double priceAction = (double) result[0];
-        long priceActionTime = (long) result[1];
+        String priceActionTime = (String) result[1];
         
         App.buildReportGUI(priceAction, priceActionTime);
     }
