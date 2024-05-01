@@ -18,8 +18,8 @@ public class EWFeatureExtraction {
     ArrayList<Double> volumes = new ArrayList<>();
 
 
-    public ArrayList<Double> localHighs = new ArrayList<>();
-    public ArrayList<Double> localLows = new ArrayList<>();
+    public ArrayList<Bar> localHighs = new ArrayList<>();
+    public ArrayList<Bar> localLows = new ArrayList<>();
 
     Feature features;
 
@@ -111,52 +111,60 @@ public class EWFeatureExtraction {
         return smaValues;
     }
 
-    public void findLocalHighsAndLows(int radius) {
-        for (int i = radius; i < highPrices.size() - radius; i++) {
+    public void findHighsAndLows(int margin) {
+        if (bars == null || bars.isEmpty() || margin <= 0 || margin >= bars.size() / 2) {
+            return;
+        }
+    
+        Bar highestBar = bars.get(0);
+        Bar lowestBar = bars.get(0);
+        ArrayList<Bar> localHighs = new ArrayList<>();
+        ArrayList<Bar> localLows = new ArrayList<>();
+    
+        for (int i = margin; i < bars.size() - margin; i++) {
+            Bar currentBar = bars.get(i);
+
+            if (currentBar.h > highestBar.h) {
+                highestBar = currentBar;
+            }
+    
+            if (currentBar.l < lowestBar.l) {
+                lowestBar = currentBar;
+            }
+    
             boolean isLocalHigh = true;
-            boolean isLocalLow = true;
-            for (int j = i - radius; j <= i + radius; j++) {
-                if (j != i) {
-                    if (highPrices.get(i) <= highPrices.get(j)) {
-                        isLocalHigh = false;
-                    }
-                    if (lowPrices.get(i) >= lowPrices.get(j)) {
-                        isLocalLow = false;
-                    }
+            for (int j = i - margin; j <= i + margin; j++) {
+                if (j == i) {
+                    continue;
+                }
+                if (currentBar.h <= bars.get(j).h) {
+                    isLocalHigh = false;
+                    break;
                 }
             }
-            if (isLocalHigh) {
-                localHighs.add(highPrices.get(i));
+    
+            boolean isLocalLow = true;
+            for (int j = i - margin; j <= i + margin; j++) {
+                if (j == i) {
+                    continue;
+                }
+                if (currentBar.l >= bars.get(j).l) {
+                    isLocalLow = false;
+                    break;
+                }
             }
-            if (isLocalLow) {
-                localLows.add(lowPrices.get(i));
-            }
+    
+            if (isLocalHigh)
+                localHighs.add(currentBar);
+    
+            if (isLocalLow)
+                localLows.add(currentBar);
         }
+    
+        this.localHighs = localHighs;
+        this.localLows = localLows;
     }
 
-    // Calculate Fibonacci retracement levels from given peak and trough
-    public Fibonacci calculateFibonacciLevels() {
-        if (localHighs.isEmpty() || localLows.isEmpty()) {
-            System.out.println("Insufficient data to calculate Fibonacci levels.");
-            return null;
-        }
-    
-        // Assuming localHighs and localLows are sorted or the latest is the most relevant
-        double lastHigh = localHighs.get(localHighs.size() - 1);
-        double lastLow = localLows.get(localLows.size() - 1);
-        double range = lastHigh - lastLow;
-    
-        double retracement38 = lastHigh - range * 0.382;
-        double retracement50 = lastHigh - range * 0.500;
-        double retracement61 = lastHigh - range * 0.618;
-    
-        double extension161 = lastLow + range * 1.618;
-        double extension261 = lastLow + range * 2.618;
-        double extension423 = lastLow + range * 4.236;
-    
-        Fibonacci fibonacci = new Fibonacci(retracement38, retracement50, retracement61, extension161, extension261, extension423);
-        return fibonacci;
-    }
 
     public int getDynamicSMAPeriod() {
         int period;
@@ -188,18 +196,6 @@ public class EWFeatureExtraction {
         }
     
         return period;
-    }
-
-
-    public Feature extractFeatures(){
-
-        findLocalHighsAndLows(3);
-        int sma_period = getDynamicSMAPeriod();
-        ArrayList<Double> sma = calculateSMA(closePrices, sma_period);
-        Fibonacci fibonacci = calculateFibonacciLevels();
-
-        Feature features = new Feature(fibonacci, localHighs, localLows, sma);
-        return features;
     }
     
 }

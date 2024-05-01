@@ -65,7 +65,9 @@ public class FindWaves {
 
         return correctiveWaves;
     }
-    private boolean isImpulseWave() {
+    private boolean isImpulseWave(ArrayList<Double> localHighs, ArrayList<Double> localLows,
+    ArrayList<Double> sma) {
+        return false;
         // Check if the ArrayLists have at least 5 elements (minimum for an impulse wave)
         // if (localHighs.size() < 5 || localLows.size() < 5 || sma.size() < 5) {
         //     return false;
@@ -115,25 +117,29 @@ public class FindWaves {
     }
 
     private boolean isCorrectiveWave(ArrayList<Double> localHighs, ArrayList<Double> localLows,
-        ArrayList<Double> sma, Fibonacci fibonacci) {
+        ArrayList<Double> sma) {
+            return false;
     // Implement rules and conditions for identifying a corrective wave
     // ...
     }
 
     private boolean isZigZag(ArrayList<Double> localHighs, ArrayList<Double> localLows,
     ArrayList<Double> sma, Fibonacci fibonacci) {
+        return false;
     // Implement rules and conditions for identifying a zigzag pattern
     // ...
     }
 
     private boolean isFlat(ArrayList<Double> localHighs, ArrayList<Double> localLows,
     ArrayList<Double> sma, Fibonacci fibonacci) {
+        return false;
     // Implement rules and conditions for identifying a flat pattern
     // ...
     }
 
     private boolean isTriangle(ArrayList<Double> localHighs, ArrayList<Double> localLows,
     ArrayList<Double> sma, Fibonacci fibonacci) {
+        return false;
     // Implement rules and conditions for identifying a triangle pattern
     // ...
     }

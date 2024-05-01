@@ -1,6 +1,9 @@
 package AI;
 
 import javax.swing.*;
+
+import org.apache.http.auth.KerberosCredentials;
+
 import java.awt.*;
 
 import java.awt.event.ActionEvent;
@@ -14,6 +17,7 @@ import java.text.ParseException;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.Instant;
 import java.time.LocalDate;
 
 public class App 
@@ -53,11 +57,22 @@ public class App
         frame.add(borderPanel);
         frame.setSize(800, 300);
         frame.setVisible(true);
-        
     }
 
-    public static void buildReportGUI(){
+    public static void buildReportGUI(double priceAction, long priceActionTime){
+        JFrame frame = new JFrame("Prediction");
+        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        JPanel flowLayoutPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JLabel priceLabel = new JLabel("Price is predicted to be: " + (int)priceAction);
+        flowLayoutPanel.add(priceLabel);
+
+        JLabel time = new JLabel("Predicted price on: " + Date.from(Instant.ofEpochSecond(priceActionTime)).toString());
+        flowLayoutPanel.add(time);
+
+        frame.add(flowLayoutPanel);
+        frame.setSize(350, 75);
+        frame.setVisible(true);
     }
 
     // public static void testFeatures(){
