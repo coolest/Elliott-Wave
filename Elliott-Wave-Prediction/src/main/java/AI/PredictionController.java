@@ -39,6 +39,7 @@ public class PredictionController {
     
     public static Object[] predictNextWavePriceAction(ArrayList<Bar> localHighs, ArrayList<Bar> localLows) {
         if (localHighs.isEmpty() || localLows.isEmpty()) {
+            System.out.println("bbbbb");
             return new Object[]{0.0, 0L};
         }
     
@@ -46,6 +47,7 @@ public class PredictionController {
         int lowsCount = localLows.size();
     
         if (highsCount < 2 || lowsCount < 2) {
+            System.out.println("aaaaaa");
             return new Object[]{0.0, 0L};
         }
     
@@ -104,7 +106,7 @@ public class PredictionController {
     
         LocalDateTime predictedDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(predictedTime), ZoneId.systemDefault());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String formattedDateTime = predictedDateTime.format(formatter);
+        String formattedDateTime = predictedDateTime.plusDays(21).format(formatter);
         
         return new Object[]{predictedPrice, formattedDateTime};
     }
@@ -120,7 +122,7 @@ public class PredictionController {
 
         Object[] result = predictNextWavePriceAction(highs, lows);
         double priceAction = (double) result[0];
-        String priceActionTime = (String) result[1];
+        String priceActionTime = String.valueOf(result[1]);
         
         App.buildReportGUI(priceAction, priceActionTime);
     }
